@@ -9,6 +9,7 @@ public class Client {
         try {
             DatagramSocket client = new DatagramSocket();
             InetAddress ipAddress = InetAddress.getByName("localhost");
+            int port = 2000;
             byte[] sendData = new byte[1024];
             byte[] receiveData = new byte[1024];
             Scanner scanner = new Scanner(System.in);
@@ -18,7 +19,7 @@ public class Client {
                 System.out.println("Inserisci un messaggio da inviare al server: ");
                 messaggio = scanner.nextLine();
                 sendData = messaggio.getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, 2000);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, port);
                 client.send(sendPacket);
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 client.receive(receivePacket);

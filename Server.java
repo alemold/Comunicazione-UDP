@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 public class Server {
-    private static int clientCounter = 0;
     public static void main(String[] args) {
         try {
             DatagramSocket server = new DatagramSocket(2000);
@@ -18,10 +17,15 @@ public class Server {
                     System.out.println("Server in attesa del client");
                     DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                     server.receive(receivePacket);
+
                     String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
-                    System.out.println("Messaggio ricevuto: '" + message + "', dal client: " + getClientId());
                     InetAddress IPAddress = receivePacket.getAddress();
                     int port = receivePacket.getPort();
+
+                    System.out.println("Messaggio ricevuto: " + message);
+                    System.out.println("Ip del client: " + IPAddress);
+                    System.out.println("Porta del client: " + port);
+
                     String capitalizedMessage = message.toUpperCase();
                     sendData = capitalizedMessage.getBytes();
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
@@ -34,8 +38,4 @@ public class Server {
             System.err.println(e);
         }
     }
-
-    private static synchronized int getClientId() {
-        return ++clientCounter;
-    }    
 }
